@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    let item = Item(star: 0, num: 0, dec: 0)
+    let item = Item(star: 0, num: 0, dec: 0, per: 95, per2: 0)
     @State var countingStar: Int = 0
     @State var comment: String = " "
     
@@ -22,13 +22,30 @@ struct ContentView: View {
                 .cornerRadius(15)
                 
             HStack {
-                Image("starforce").resizable().frame(width: 150, height: 150).padding()
+                Image("Arcane").resizable().frame(width: 150, height: 150).padding()
                 
                 VStack {
                     if item.star == 0 {
                         Text("0 -> 1 성")
                     } else {
-// 1성부터 작성하면 됨
+                        Text("\(item.star)->\(item.star + 1) 성")
+                    }
+                    if item.star == 25 {
+                        Text("강화가 완료되었습니다.")
+                    } else if item.chanceTime == 2 {
+                        Text("성공확률 : 100% ")
+                    } else {
+                        Text("성공확률 : \(item.percentage)%")
+                    }
+                    if item.chanceTime != 2 {
+                        if item.star <= 10 || item.star == 15 || item.star == 20  {
+                            Text("실패확률 : \(String(100 - (Double(item.percentage) - item.destoryPercentage)))")
+                        } else {
+                            Text("실패(하락)확률 : \(String(100 - (Double(item.percentage) - item.destoryPercentage))) ")
+                        }
+                    }
+                    if item.destoryPercentage > 0 && item.chanceTime != 2 {
+                        Text("파괴확률 : \(String(item.destoryPercentage))")
                     }
                 }
             }
